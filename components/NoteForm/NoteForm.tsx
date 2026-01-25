@@ -31,7 +31,9 @@ const createNoteMutation = useMutation({
         clearDraft();
     router.push('/notes/filter/all');
     },
-  
+    onError: () => {
+      toast.error('Failed to create the note. Please try again.');
+    },
 });
 
 function handleSubmit (formData: FormData): void {

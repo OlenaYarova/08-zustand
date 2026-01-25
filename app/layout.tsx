@@ -8,7 +8,6 @@ import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 
 
 const roboto = Roboto({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
   weight: ['400', '700'],
   variable: '--font-roboto', 
