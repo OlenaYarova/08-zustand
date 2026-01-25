@@ -5,19 +5,25 @@ import { dehydrate,HydrationBoundary} from "@tanstack/react-query";
 import { Metadata } from 'next';
 
 type NoteDetailsProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string }>
 };
 
-export async function generateMetadata({ params }: NoteDetailsProps): Promise<Metadata> {
+
+type MetadataProps = {
+  params: Promise<{ id: string }>
+};
+
+
+export async function generateMetadata({ params }: MetadataProps): Promise<Metadata> {
   const { id } = await params;
     const note = await fetchNoteById(id);
   return {
     title:`Note ${ note.title}`,
-      description: `Note ${ note.title}`,
+      description: note.content.slice(0, 30) ,
      openGraph: {
       title: `Note ${ note.title}`,
-         description: `Note ${ note.title}`,
-      url: `https://notehub.app/notes/"${id}"`,
+         description: note.content.slice(0, 30),
+      url: `https://notehub.app/notes/${id}`,
       images: [
         {
           url: `https://ac.goit.global/fullstack/react/notehub-og-meta.jpg`,

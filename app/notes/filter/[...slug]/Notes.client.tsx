@@ -6,7 +6,7 @@ import Pagination from '@/components/Pagination/Pagination'
 import React, { useEffect, useState } from 'react'
 import { fetchNotes } from '@/lib/api'
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import {useDebouncedCallback} from 'use-debounce'
 import Link from "next/link";
 
@@ -23,18 +23,18 @@ export default function NotesClient({tag}: NotesClientsProps) {
 
 
 	const { data, isSuccess } = useQuery({
-		queryKey: ["notes", page, query, tag],
-		queryFn: () => fetchNotes(page, query.trim(),tag),
+		queryKey: ["notes",query,tag, page],
+		queryFn: () => fetchNotes(page, query.trim(), tag),
 		placeholderData: keepPreviousData,
 		refetchOnMount: false,
 		
 	})
 
 	useEffect(() => {
-		if (isSuccess && data && data.notes.length === 0) {
+		if (isSuccess && data?.notes.length === 0) {
 			toast.error('No notes.');
 		}
-	}, [isSuccess, data]
+	}, [isSuccess, data?.notes.length]
 	);
 
 	const notes = data?.notes || [];
@@ -53,7 +53,7 @@ export default function NotesClient({tag}: NotesClientsProps) {
 		<div className={css.app}>
 			<header className={css.toolbar}>
 				<SearchBox onChange={handleChangeQuery} />
-				{totalPages > 1 &&
+				{totalPages > 0 &&
 					(
 						<Pagination
 							totalPages={totalPages}
@@ -68,7 +68,7 @@ export default function NotesClient({tag}: NotesClientsProps) {
 			
 			{notes.length > 0 && <NoteList notes={notes} />}
 			
-			<Toaster />
+			
 			
 		</div>
 	);

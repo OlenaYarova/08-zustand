@@ -3,14 +3,15 @@
 import css from "@/components/NoteForm/NoteForm.module.css"
 import toast from "react-hot-toast";
 import { createNote } from "@/lib/api";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from 'next/navigation';
 import { NoteTag } from "@/types/note";
 import {useNoteDraftStore} from "@/lib/store/noteStore"
 
 const NoteForm =() => {
-    const router= useRouter()
-
+    const router = useRouter();
+    const queryClient = useQueryClient();
+    
     const { draft, setDraft, clearDraft } = useNoteDraftStore();
 
     const handleChange = (
@@ -28,6 +29,8 @@ const NoteForm =() => {
 const createNoteMutation = useMutation({
     mutationFn: createNote,
     onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['notes'] });
+        
         clearDraft();
     router.push('/notes/filter/all');
     },
@@ -71,7 +74,7 @@ return (
             <input
                 id="title"
                 name="title"
-                defaultValue={draft?.title}
+                value={draft.title}
                 onChange={handleChange}
                 className={css.input} />
                 
@@ -80,7 +83,7 @@ return (
             <div className={css.formGroup}>
                 <label htmlFor="content">Content</label>
             < textarea
-                defaultValue={draft?.content}
+                value={draft.content}
                 onChange={handleChange}
                     id="content"
                     name="content"
@@ -95,6 +98,8 @@ return (
             <select
                 id="tag"
                 name="tag"
+                  value={draft.tag}
+          onChange={handleChange}
                 className={css.select}>
                     <option value="Todo">Todo</option>
                     <option value="Work">Work</option>

@@ -16,11 +16,11 @@ export async function generateMetadata({ params }: NotesByCategoryProps): Promis
     const tag = slug[0]=== 'all' ? 'All' : slug[0];
   return {
     title: `${tag} notes`,
-      description:  `Browse notes filtered by "${tag}" in NoteHub.`,
+      description:  `Browse notes filtered by ${tag} in NoteHub.`,
      openGraph: {
       title: `${tag} notes`,
-         description: `Browse notes filtered by "${tag}" in NoteHub.`,
-      url: `https://notehub.app/filter/"${tag}"`,
+         description: `Browse notes filtered by ${tag} in NoteHub.`,
+      url: `https://notehub.app/filter/${tag}`,
       images: [
         {
           url: 'https://ac.goit.global/fullstack/react/notehub-og-meta.jpg',

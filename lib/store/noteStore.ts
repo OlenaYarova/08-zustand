@@ -5,7 +5,7 @@ import { persist } from 'zustand/middleware';
 
 type NoteDraft = {
     title: string;
-    content?: string;
+    content: string;
     tag: 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 };
 
